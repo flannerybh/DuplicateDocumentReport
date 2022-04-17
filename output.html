@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head><style>
+		tr.dark { background-color: #CCFFDD }
+	</style></head>
+
+	<body>
+		<div id="container"/>
+	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+	<script type="text/javascript">
+		const e = React.createElement;
+
+		class Container extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = { data: props };
+			}
+			render() {
+				const dataArray = [];
+				Object.keys(this.state.data).forEach((key) => dataArray.push({...this.state.data[key], key: key}));	
+				console.log(dataArray);
+				dataArray.sort((a,b) => a.size * (a.paths.length-1) < b.size * (b.paths.length-1));
+				const x = dataArray.map((el) => e(Row, { key: el.key, data: el }));
+				return e('table', {}, e('tbody', {}, x));
+			}
+
+		
+		}
+		class Row extends React.Component {
+			constructor(props) {
+				super(props);
+				this.state = {data: props.data};
+			}
+			render() {
+				console.log(this.state.data.paths.reduce((acc, cur) => {acc.push(cur); return acc}, []));
+				return [e('tr', {className: 'dark', key: 'main', title: this.state.data.paths.join(',')}, [
+					e('td', {key: 'length'}, (this.state.data.paths.length)),
+					e('td', {key: 'paths', title: this.state.data.paths.length}, (this.state.data.paths[0])),
+					e('td', {key: 'size'}, (this.state.data.size * (this.state.data.paths.length-1))),
+				]),...this.state.data.paths.slice(1).reduce(
+					(acc, cur, i) => { 
+						i && acc.push(e('tr', {key: 'child' + cur}, [
+							e('td', {}, ''),
+							e('td', {}, cur),
+							e('td', {}, ''),
+						]));
+						return acc;
+					},[]
+				)];
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		const data = JSON.parse('{0}');
+		const domContainer = document.querySelector("#container");
+		ReactDOM.render(e(Container, data), domContainer);
+	</script>
+	</body>
+</html>
