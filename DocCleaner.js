@@ -5,7 +5,7 @@ const os = require('os');
 const { exec } = require("child_process");
 (function() {
 	const outputFile = '12E91D56B1F8F92DB8B9DB18CFFCD35CEF600ECA.html';
-
+console.log(process.version);
 	let dir = "~";
 	for(arg of process.argv){
 		const [key, val] = arg.split("=");
@@ -37,6 +37,7 @@ const { exec } = require("child_process");
 	function traverseDir(dir, hashDict, vals){
 		[cnt, hits] = vals;
 		const filenames = fs.readdirSync(dir, {withFileTypes: true});
+		console.log(dir);
 		filenames.forEach((dirent) => {
 			cnt++;
 			const newPath = path.join(dir, dirent.name);

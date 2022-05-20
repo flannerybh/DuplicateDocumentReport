@@ -37,7 +37,7 @@
 					e('td', {key: 'length'}, (this.state.data.paths.length)),
 					e('td', {key: 'paths', title: this.state.data.paths.length}, (this.state.data.paths[0])),
 					e('td', {key: 'size'}, (this.state.data.size * (this.state.data.paths.length-1))),
-				]),...this.state.data.paths.slice(1).reduce(
+				]),...this.state.data.paths.slice(0).reduce(
 					(acc, cur, i) => { 
 						i && acc.push(e('tr', {key: 'child' + cur}, [
 							e('td', {}, ''),
